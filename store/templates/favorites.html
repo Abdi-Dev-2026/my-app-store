@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Favorites</title>
+</head>
+<body>
+
+<h2>My Favorite Apps ❤️</h2>
+
+{% for fav in favorites %}
+    <div>
+        <h3>{{ fav.product.name }}</h3>
+        <a href="{{ fav.product.download_link }}">Download</a>
+    </div>
+{% empty %}
+    <p>No favorites yet.</p>
+{% endfor %}
+
+</body>
+</html>

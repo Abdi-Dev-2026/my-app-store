@@ -1,0 +1,17 @@
+<body style="text-align:center; padding-top:50px; font-family:sans-serif;">
+    <h2>Soo Gal Website-ka 🔐</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: red; font-weight: bold;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="number" name="phone" placeholder="Lambarka Taleefanka" required style="padding:10px; margin:5px; width:250px;"><br>
+        <input type="password" name="password" placeholder="Password-kaaga" required style="padding:10px; margin:5px; width:250px;"><br>
+        <button type="submit" style="padding:10px 20px; background:blue; color:white; border:none; cursor:pointer;">Soo Gal</button>
+    </form>
+    <p>Ma haysatid account? <a href="/accounts/register/">Is-diiwaan geli halkan</a></p>
+</body>

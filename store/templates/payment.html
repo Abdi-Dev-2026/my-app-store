@@ -1,0 +1,13 @@
+<div style="background:#1e293b; color:white; padding:40px; border-radius:20px; text-align:center; max-width:500px; margin:50px auto; font-family:sans-serif;">
+    <h2>Bixi lacagta: {{ product.name }}</h2>
+    <p style="color:#38bdf8; font-size:24px; font-weight:bold;">Qiimaha: ${{ product.price }}</p>
+    <div style="background:#0f172a; padding:20px; border-radius:10px; margin:20px 0;">
+        <p>Fadlan lacagta ku soo dir nambarkaan:</p>
+        <h3 style="color:#10b981;">+252 61 6898182</h3>
+    </div>
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="phone" placeholder="Gali nambarka aad lacagta ka soo dirtay" required style="width:100%; padding:12px; border-radius:10px; border:none; margin-bottom:20px;">
+        <button type="submit" style="background:#38bdf8; color:#0f172a; padding:15px 30px; border:none; border-radius:10px; font-weight:bold; cursor:pointer; width:100%;">Xaqiiji inaan lacagta diray ✅</button>
+    </form>
+</div>

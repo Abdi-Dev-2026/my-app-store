@@ -1,0 +1,18 @@
+<body style="text-align:center; padding-top:50px; font-family:sans-serif;">
+    <h2>Ku Diiwaan-geli Lambarkaaga 📱</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color: red; font-weight: bold;">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <form method="POST">
+        {% csrf_token %}
+        <input type="text" name="name" placeholder="Magacaaga oo buuxa" required style="padding:10px; margin:5px; width:250px;"><br>
+        <input type="number" name="phone" placeholder="Lambarka Taleefanka (61xxxxxxx)" required style="padding:10px; margin:5px; width:250px;"><br>
+        <input type="password" name="password" placeholder="Password cusub" required style="padding:10px; margin:5px; width:250px;"><br>
+        <button type="submit" style="padding:10px 20px; background:green; color:white; border:none; cursor:pointer;">Abuur Account</button>
+    </form>
+    <p>Horey ma u lahayd account? <a href="/accounts/login/">Login halkan</a></p>
+</body>
