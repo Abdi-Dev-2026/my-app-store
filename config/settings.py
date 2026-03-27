@@ -18,7 +18,9 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'cloudinary_storage', # Waa inuu ka sarreeyaa staticfiles si uu u shaqeeyo
+    
+    # Cloudinary storage waa inuu ka sarreeyaa staticfiles
+    'cloudinary_storage', 
     'django.contrib.staticfiles',
     
     # Third-party apps
@@ -87,7 +89,7 @@ STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# XOGTAADA CLOUDINARY EE SAXDA AH
+# XOGTAADA CLOUDINARY EE RASHMIGA AH
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dbfoc5rcs',
     'API_KEY': '394126421647187',
@@ -95,6 +97,7 @@ CLOUDINARY_STORAGE = {
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
