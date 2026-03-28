@@ -4,12 +4,13 @@ from pathlib import Path
 # 1. Base Directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 2. Security Settings
-SECRET_KEY = 'django-insecure-i*o-on#699)#k%^1)1qo%h443i1al3d8%chr!t3^=mw-iualcc'
+# 2. Security Settings (DEPLOY READY)
+SECRET_KEY = os.environ.get('SECRET_KEY')
 
-DEBUG = True 
+DEBUG = False
 
-ALLOWED_HOSTS = ['*'] 
+ALLOWED_HOSTS = ['*']
+
 
 # 3. Application Definition
 INSTALLED_APPS = [
@@ -18,18 +19,19 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    
-    # Cloudinary storage waa inuu ka sarreeyaa staticfiles
-    'cloudinary_storage', 
+
+    # Cloudinary storage (waa inuu ka sarreeyaa staticfiles)
+    'cloudinary_storage',
     'django.contrib.staticfiles',
-    
-    # Third-party apps
+
+    # Third-party
     'cloudinary',
-    
+
     # Your apps
     'store',
     'accounts',
 ]
+
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -39,15 +41,19 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # Maintenance mode
     'store.middleware.MaintenanceModeMiddleware',
 ]
 
+
 ROOT_URLCONF = 'config.urls'
+
 
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / 'templates'], 
+        'DIRS': [BASE_DIR / 'templates'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -60,9 +66,11 @@ TEMPLATES = [
     },
 ]
 
+
 WSGI_APPLICATION = 'config.wsgi.application'
 
-# 4. Database
+
+# 4. Database (SQLite - OK for now)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -70,13 +78,15 @@ DATABASES = {
     }
 }
 
+
 # 5. Password Validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',},
+    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
+    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
 ]
+
 
 # 6. Internationalization
 LANGUAGE_CODE = 'en-us'
@@ -84,26 +94,32 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# 7. Static & Media Files (Cloudinary Integration)
+
+# 7. Static Files
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# XOGTAADA CLOUDINARY EE RASHMIGA AH
+
+# 8. Cloudinary (ENV VARIABLES ONLY)
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dbfoc5rcs',
-    'API_KEY': '394126421647187',
-    'API_SECRET': 'njrnQINjfXDByuw3IWX0vMP65sk'
+    'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
+    'API_KEY': os.environ.get('API_KEY'),
+    'API_SECRET': os.environ.get('API_SECRET'),
 }
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+
+# 9. Media (fallback)
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
-# 8. Login/Logout Settings
+
+# 10. Login / Logout
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
