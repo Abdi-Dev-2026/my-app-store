@@ -96,9 +96,12 @@ USE_TZ = True
 
 
 # 7. Static Files
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# ✅ TAN AYAA KU MAQNAYD (MUHIIM)
+STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
 
 
 # 8. Cloudinary (ENV VARIABLES ONLY)
