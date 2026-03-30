@@ -1,18 +1,18 @@
 import os
 from pathlib import Path
 
-# 1. Base Directory
+
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# 2. Security Settings (DEPLOY READY)
-SECRET_KEY = os.environ.get('SECRET_KEY')
+
+SECRET_KEY = os.environ.get('SECRET_KEY', 'fallback-secret-key')
 
 DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
 
-# 3. Application Definition
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -20,14 +20,14 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
 
-    # Cloudinary storage (waa inuu ka sarreeyaa staticfiles)
+
     'cloudinary_storage',
     'django.contrib.staticfiles',
 
-    # Third-party
+
     'cloudinary',
 
-    # Your apps
+
     'store',
     'accounts',
 ]
@@ -35,6 +35,9 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -42,7 +45,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-    # Maintenance mode
+   
     'store.middleware.MaintenanceModeMiddleware',
 ]
 
@@ -70,7 +73,7 @@ TEMPLATES = [
 WSGI_APPLICATION = 'config.wsgi.application'
 
 
-# 4. Database (SQLite)
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -79,7 +82,7 @@ DATABASES = {
 }
 
 
-# 5. Password Validation
+
 AUTH_PASSWORD_VALIDATORS = [
     {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
     {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
@@ -88,34 +91,34 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
-# 6. Internationalization
+
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
 
-# 7. Static Files
+
 STATIC_URL = '/static/'
 STATICFILES_DIRS = [BASE_DIR / 'static']
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
-# ✅ MUHIIM (ERROR-KAAGA XALINAYA)
+
 STATICFILES_STORAGE = 'cloudinary_storage.storage.StaticCloudinaryStorage'
 
 
-# 8. Cloudinary (ENV VARIABLES)
+
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': os.environ.get('CLOUD_NAME'),
     'API_KEY': os.environ.get('API_KEY'),
     'API_SECRET': os.environ.get('API_SECRET'),
 }
 
-# ✅ Media files Cloudinary
+
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 
-# 9. Media fallback (optional)
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -123,7 +126,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 
-# 10. Auth redirects
+
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
