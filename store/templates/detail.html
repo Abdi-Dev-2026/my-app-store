@@ -107,16 +107,23 @@ a { text-decoration: none; color: inherit; }
         <p class="description">{{ product.description }}</p>
         <p class="price">$ {{ product.price }}</p>
 
-        <div class="detail-buttons">
-            {% if user.is_authenticated %}
-                <a href="{% url 'toggle_favorite' product.id %}">❤️ Favorite</a>
-            {% endif %}
-            {% if product.download_link %}
-                <a href="{{ product.download_link }}" target="_blank" class="download-btn btn-unlocked">⬇️ Download</a>
-            {% else %}
-                <a href="{% url 'request_download' product.id %}" class="download-btn btn-locked">🔒 Bixi Lacagta</a>
-            {% endif %}
-        </div>
+       <div class="detail-buttons">
+
+    {% if user.is_authenticated %}
+        <a href="{% url 'toggle_favorite' product.id %}">❤️ Favorite</a>
+    {% endif %}
+
+    {% if is_approved %}
+        <a href="{{ product.download_link }}" target="_blank" class="download-btn btn-unlocked">
+            🚀 Soo Degso Hadda
+        </a>
+    {% else %}
+        <a href="{% url 'request_download' product.id %}" class="download-btn btn-locked">
+            🔒 Bixi Lacagta si aad u Degsato
+        </a>
+    {% endif %}
+
+</div>
 
         <a href="/" class="back-btn">← Ku laabo Bogga Hore</a>
     </div>
