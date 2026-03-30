@@ -11,6 +11,10 @@ DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
+# CSRF trusted origins
+CSRF_TRUSTED_ORIGINS = [
+    "https://my-app-store-production.up.railway.app",
+]
 
 
 INSTALLED_APPS = [
@@ -20,13 +24,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
 
-
     'cloudinary_storage',
     'django.contrib.staticfiles',
 
-
     'cloudinary',
-
 
     'store',
     'accounts',
@@ -45,7 +46,6 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 
-   
     'store.middleware.MaintenanceModeMiddleware',
 ]
 
