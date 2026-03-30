@@ -5,17 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Soomaali App Store 🚀</title>
-    
-    <!-- Link to your CSS file -->
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
 
 <!-- Navigation Bar -->
 <nav class="navbar">
-    <a href="/" class="logo">
-        Somali AppStore 🚀
-    </a>
+    <a href="/" class="logo">Somali AppStore 🚀</a>
     <div class="nav-links">
         <a href="/">Dukaanka</a>
         {% if user.is_authenticated %}
@@ -52,9 +48,11 @@
         <!-- Favorite Button -->
         <a href="{% url 'toggle_favorite' product.id %}" class="fav-btn">❤️</a>
         
-        <!-- Product Image -->
+        <!-- Product Image: local upload ama URL -->
         {% if product.image %}
             <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% elif product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
         {% else %}
             <img src="{% static 'images/logo.png' %}" alt="No Image">
         {% endif %}
@@ -72,8 +70,6 @@
     {% endfor %}
 </div>
 
-<!-- JS Script -->
 <script src="{% static 'js/main.js' %}"></script>
-
 </body>
 </html>
