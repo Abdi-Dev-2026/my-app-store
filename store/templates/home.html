@@ -2,14 +2,146 @@
 <!DOCTYPE html>
 <html lang="so">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Soomaali App Store 🚀</title>
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Soomaali App Store 🚀</title>
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<style>
+/* ====== General ====== */
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0; padding: 0;
+    background: #f9f9f9; color: #333;
+    transition: background 0.3s, color 0.3s;
+}
+a { text-decoration: none; color: inherit; }
+
+/* ====== Navbar ====== */
+.navbar {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 15px 30px;
+    background: linear-gradient(90deg, #4e54c8, #8f94fb);
+    color: #fff;
+    position: sticky; top: 0; z-index: 100;
+    transition: background 0.3s;
+}
+.navbar .logo { font-weight: bold; font-size: 1.5rem; }
+.nav-links { display: flex; gap: 15px; align-items: center; }
+.nav-links a { color: #fff; transition: 0.3s; }
+.nav-links a:hover { color: #ffe100; }
+.points-badge {
+    background: #fff; color: #4e54c8;
+    padding: 3px 8px; border-radius: 12px;
+    font-size: 0.9rem; font-weight: bold;
+    transition: transform 0.3s;
+}
+
+/* ====== Dark Mode ====== */
+body.dark-mode {
+    background: #1e1e2f; color: #e0e0e0;
+}
+body.dark-mode .navbar {
+    background: linear-gradient(90deg, #0f172a, #1e293b);
+}
+body.dark-mode .card {
+    background: #2c2c3a; color: #e0e0e0;
+}
+body.dark-mode a { color: #a5b4fc; }
+body.dark-mode .btn-view { background: #667eea; }
+body.dark-mode .btn-unlocked { background: #22c55e; }
+body.dark-mode .btn-locked { background: #f59e0b; }
+body.dark-mode .back-btn { color: #a5b4fc; }
+
+/* ====== Search Section ====== */
+.search-section {
+    text-align: center;
+    padding: 30px 20px;
+    background: linear-gradient(to right, #667eea, #764ba2);
+    color: #fff;
+}
+.search-section h1 { margin-bottom: 15px; font-size: 2rem; }
+.search-section input[type="text"] {
+    padding: 10px 15px; width: 250px;
+    border: none; border-radius: 25px 0 0 25px;
+    outline: none; font-size: 1rem;
+}
+.search-section button.search-btn {
+    padding: 10px 20px; border: none; border-radius: 0 25px 25px 0;
+    background: #ffe100; color: #4e54c8; font-weight: bold;
+    cursor: pointer; transition: 0.3s;
+}
+.search-section button.search-btn:hover { background: #fff; color: #4e54c8; }
+
+/* ====== Categories ====== */
+.categories {
+    display: flex; justify-content: center; flex-wrap: wrap; gap: 10px;
+    padding: 20px 0;
+}
+.cat-btn {
+    padding: 8px 15px; background: #fff; border-radius: 20px;
+    color: #4e54c8; font-weight: bold; transition: 0.3s;
+}
+.cat-btn:hover {
+    background: #4e54c8; color: #fff; transform: scale(1.05);
+}
+
+/* ====== Products Container ====== */
+.container {
+    display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; padding: 20px;
+}
+.card {
+    background: #fff; border-radius: 15px;
+    box-shadow: 0 6px 15px rgba(0,0,0,0.1);
+    overflow: hidden; width: 250px; transition: transform 0.3s, box-shadow 0.3s;
+    position: relative; opacity: 0; /* for ScrollReveal */
+}
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+}
+/* Favorite button */
+.fav-btn {
+    position: absolute; top: 10px; right: 10px;
+    font-size: 1.2rem; background: rgba(255,255,255,0.9);
+    padding: 5px 8px; border-radius: 50%; transition: 0.3s;
+}
+.fav-btn:hover { transform: scale(1.2); }
+/* Card Image */
+.card img { width: 100%; height: 180px; object-fit: cover; display: block; transition: transform 0.3s, box-shadow 0.3s; }
+.card img:hover { transform: scale(1.05); box-shadow: 0 10px 20px rgba(0,0,0,0.3); }
+/* Card Body */
+.card-body { padding: 15px; }
+.card-body h3 { font-size: 1.2rem; margin: 0 0 10px 0; color: #4e54c8; }
+.card-body p.description { font-size: 0.9rem; color: #555; }
+.card-body p.price { font-weight: bold; margin: 10px 0; color: #ff6600; }
+.btn-view {
+    display: inline-block; padding: 8px 15px;
+    background: #4e54c8; color: #fff; border-radius: 25px;
+    text-align: center; transition: 0.3s;
+}
+.btn-view:hover { background: #667eea; transform: scale(1.05); }
+
+/* ====== No results ====== */
+.no-results { text-align: center; font-size: 1.2rem; color: #999; margin: 40px 0; }
+
+/* ====== Points Animation ====== */
+@keyframes pop { 0%{transform:scale(1);}50%{transform:scale(1.4);}100%{transform:scale(1);} }
+.points-badge.animate { animation: pop 0.6s ease; }
+
+/* ====== Responsive ====== */
+@media (max-width: 768px) {
+    .search-section input[type="text"] { width: 70%; }
+    .container { gap: 15px; }
+    .card { width: 90%; }
+    .nav-links { flex-direction: column; gap: 8px; }
+    .categories { gap: 8px; }
+}
+</style>
 </head>
 <body>
 
-<!-- Navigation Bar -->
+<!-- Navbar -->
 <nav class="navbar">
     <a href="/" class="logo">Somali AppStore 🚀</a>
     <div class="nav-links">
@@ -21,6 +153,8 @@
         {% else %}
             <a href="/login/">Login</a>
         {% endif %}
+        <!-- Dark Mode Toggle -->
+        <button id="darkModeToggle" style="margin-left:10px; padding:5px 10px; border:none; border-radius:8px; cursor:pointer;">🌙 Dark Mode</button>
     </div>
 </nav>
 
@@ -45,22 +179,17 @@
 <div class="container">
     {% for product in products %}
     <div class="card">
-        <!-- Favorite Button -->
         <a href="{% url 'toggle_favorite' product.id %}" class="fav-btn">❤️</a>
-        
-        <!-- Product Image: local upload ama URL -->
         {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
         {% elif product.image_url %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">
         {% else %}
-            <img src="{% static 'images/logo.png' %}" alt="No Image">
+            <img src="{% static 'images/logo.png' %}" alt="No Image" loading="lazy">
         {% endif %}
-        
-        <!-- Product Info -->
         <div class="card-body">
             <h3>{{ product.name }}</h3>
-            <p class="description">{{ product.description|truncatewords:8 }}</p>
+            <p class="description">{{ product.description|truncatewords:12 }}</p>
             <p class="price">$ {{ product.price }}</p>
             <a href="{% url 'product_detail' product.id %}" class="btn-view">View Details</a>
         </div>
@@ -70,6 +199,30 @@
     {% endfor %}
 </div>
 
+<!-- Scripts -->
 <script src="{% static 'js/main.js' %}"></script>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script>
+// ScrollReveal
+ScrollReveal().reveal('.card', {
+    distance: '50px', duration: 800, easing: 'ease-in-out',
+    origin: 'bottom', interval: 100, reset: false
+});
+
+// Dark Mode Toggle
+const toggleBtn = document.getElementById('darkModeToggle');
+toggleBtn.addEventListener('click', () => {
+    document.body.classList.toggle('dark-mode');
+    toggleBtn.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+});
+
+// Points Badge Animation
+const pointsBadge = document.querySelector('.points-badge');
+if(pointsBadge) {
+    pointsBadge.classList.add('animate');
+    setTimeout(() => pointsBadge.classList.remove('animate'), 600);
+}
+</script>
+
 </body>
 </html>

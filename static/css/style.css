@@ -123,3 +123,65 @@ input[type="text"] {
     .logo { font-size: 20px; }
     .search-btn { margin-left: -45px; padding: 12px 15px; }
 }
+/* Fade-in animation for cards */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container .card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0; /* Bilowga card-ka waa invisible */
+}
+
+/* Delay for each card */
+.container .card:nth-child(1) { animation-delay: 0.1s; }
+.container .card:nth-child(2) { animation-delay: 0.2s; }
+.container .card:nth-child(3) { animation-delay: 0.3s; }
+.container .card:nth-child(4) { animation-delay: 0.4s; }
+/* Haddii ay ka badan yihiin, sii kordhi */
+/* Fade-in animation for cards */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.container .card {
+    animation: fadeInUp 0.6s ease forwards;
+    opacity: 0; /* Bilowga card-ka waa invisible */
+}
+
+/* Delay for each card */
+.container .card:nth-child(1) { animation-delay: 0.1s; }
+.container .card:nth-child(2) { animation-delay: 0.2s; }
+.container .card:nth-child(3) { animation-delay: 0.3s; }
+.container .card:nth-child(4) { animation-delay: 0.4s; }
+/* Haddii ay ka badan yihiin, sii kordhi */
+.card img {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card img:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+}
+.detail-buttons a, .download-btn {
+    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.detail-buttons a:hover, .download-btn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
