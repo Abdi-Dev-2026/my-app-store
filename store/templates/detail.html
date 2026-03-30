@@ -1,223 +1,50 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="so">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} - Somali App Store 🚀</title>
+<!DOCTYPE html>  <html lang="so">  
+<head>  
+    <meta charset="UTF-8">  
+    <title>{{ product.name }} - Details</title>  
+    <style>  
+        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; padding: 20px; }  
+        .detail-container { max-width: 800px; margin: auto; background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid #334155; }  
+        .detail-container img { width: 100%; max-width: 350px; height: 350px; border-radius: 20px; object-fit: cover; border: 3px solid #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }  
+        h1 { font-size: 36px; margin-top: 20px; }  
+        .price { font-size: 28px; color: #38bdf8; font-weight: bold; margin: 15px 0; }  
+        .desc { line-height: 1.8; color: #94a3b8; margin: 20px 0; font-size: 18px; text-align: justify; padding: 0 20px; }  /* Badamada */  
+    .download-btn { padding: 18px 45px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 20px; display: inline-block; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }  
+      
+    /* Marka uu furan yahay (Unlocked) */  
+    .btn-unlocked { background: #10b981; color: white; }  
+    .btn-unlocked:hover { transform: scale(1.05); background: #059669; }  
 
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    /* Marka uu xiran yahay (Locked/Pay) */  
+    .btn-locked { background: #f59e0b; color: #0f172a; }  
+    .btn-locked:hover { transform: scale(1.05); background: #d97706; }  
 
-    <style>
-        /* ===== GENERAL ===== */
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            margin: 0;
-            background: #f9f9f9;
-            color: #333;
-            transition: 0.3s;
-        }
+    .back-btn { display: block; margin-top: 30px; color: #94a3b8; text-decoration: none; font-weight: bold; }  
+    .back-btn:hover { color: #38bdf8; }  
+</style>
 
-        a { text-decoration: none; color: inherit; }
+</head>  
+<body>  <div class="detail-container">  
+    {% if product.image %}  
+        <img src="{{ product.image.url }}" alt="{{ product.name }}">  
+    {% endif %}  <h1>{{ product.name }}</h1>  
+<p class="price">Qiimaha: ${{ product.price }}</p>  
+  
+<div class="desc">  
+    {{ product.description }}  
+</div>  
+  
+{% if is_approved %}  
+    <a href="{{ product.download_link }}" target="_blank" class="download-btn btn-unlocked">  
+        🚀 Soo Degso Hadda (Unlocked)  
+    </a>  
+{% else %}  
+    <a href="{% url 'request_download' product.id %}" class="download-btn btn-locked">  
+        🔒 Bixi Lacagta si aad u Degsato  
+    </a>  
+{% endif %}  
+  
+<a href="/" class="back-btn">← Ku laabo Bogga Hore</a>
 
-        /* ===== DARK MODE ===== */
-        body.dark-mode {
-            background: #0f172a;
-            color: #e2e8f0;
-        }
-        body.dark-mode .detail-container {
-            background: #1e293b;
-        }
-
-        /* ===== NAVBAR ===== */
-        .navbar {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 15px 30px;
-            background: linear-gradient(90deg,#4e54c8,#8f94fb);
-            color: #fff;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-        }
-
-        .nav-links {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .nav-links a:hover { color: #ffe100; }
-
-        .points-badge {
-            background: #fff;
-            color: #4e54c8;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-weight: bold;
-        }
-
-        /* ===== DETAIL ===== */
-        .detail-container {
-            max-width: 900px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            gap: 20px;
-            flex-wrap: wrap;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            opacity: 0;
-        }
-
-        .detail-image {
-            flex: 1 1 300px;
-        }
-
-        .detail-image img {
-            width: 100%;
-            border-radius: 15px;
-            transition: 0.3s;
-        }
-
-        .detail-image img:hover {
-            transform: scale(1.03);
-        }
-
-        .detail-info {
-            flex: 1 1 300px;
-        }
-
-        .detail-info h1 {
-            color: #4e54c8;
-        }
-
-        .price {
-            font-size: 20px;
-            font-weight: bold;
-            color: #ff6600;
-        }
-
-        .description {
-            line-height: 1.6;
-            color: #555;
-        }
-
-        /* ===== BUTTONS ===== */
-        .buttons {
-            margin-top: 20px;
-            display: flex;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .btn {
-            padding: 10px 20px;
-            border-radius: 25px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .btn:hover {
-            transform: scale(1.05);
-        }
-
-        .btn-green { background: #10b981; color: #fff; }
-        .btn-yellow { background: #f59e0b; color: #000; }
-        .btn-purple { background: #4e54c8; color: #fff; }
-
-        /* ===== RESPONSIVE ===== */
-        @media (max-width: 768px) {
-            .detail-container {
-                flex-direction: column;
-            }
-        }
-    </style>
-</head>
-<body>
-
-<!-- NAVBAR -->
-<nav class="navbar">
-    <a href="/">Somali AppStore 🚀</a>
-
-    <div class="nav-links">
-        <a href="/">Dukaanka</a>
-
-        {% if user.is_authenticated %}
-            <a href="{% url 'favorites' %}">❤️ Favorites</a>
-            <a href="/my-apps/">My Apps</a>
-            <span class="points-badge">{{ user.username }}</span>
-        {% else %}
-            <a href="/login/">Login</a>
-        {% endif %}
-
-        <button id="darkModeToggle">🌙</button>
-    </div>
-</nav>
-
-<!-- DETAIL -->
-<div class="detail-container">
-
-    <div class="detail-image">
-        {% if product.image %}
-            <img src="{{ product.image.url }}" loading="lazy">
-        {% elif product.image_url %}
-            <img src="{{ product.image_url }}" loading="lazy">
-        {% else %}
-            <img src="{% static 'images/logo.png' %}" loading="lazy">
-        {% endif %}
-    </div>
-
-    <div class="detail-info">
-        <h1>{{ product.name }}</h1>
-
-        <p class="price">$ {{ product.price }}</p>
-
-        <p class="description">{{ product.description }}</p>
-
-        <div class="buttons">
-
-            {% if user.is_authenticated %}
-                <a href="{% url 'toggle_favorite' product.id %}" class="btn btn-purple">
-                    ❤️ Favorite
-                </a>
-            {% endif %}
-
-            {% if is_approved %}
-                <a href="{{ product.download_link }}" target="_blank" class="btn btn-green">
-                    🚀 Soo Degso
-                </a>
-            {% else %}
-                <a href="{% url 'request_download' product.id %}" class="btn btn-yellow">
-                    🔒 Bixi Lacagta
-                </a>
-            {% endif %}
-
-        </div>
-
-        <br>
-        <a href="/">← Back</a>
-
-    </div>
-</div>
-
-<!-- SCRIPTS -->
-<script src="https://unpkg.com/scrollreveal"></script>
-
-<script>
-ScrollReveal().reveal('.detail-container', {
-    distance: '40px',
-    duration: 800,
-    origin: 'bottom'
-});
-
-// DARK MODE
-document.getElementById('darkModeToggle').onclick = () => {
-    document.body.classList.toggle('dark-mode');
-};
-</script>
-
-</body>
+</div>  </body>  
 </html>
