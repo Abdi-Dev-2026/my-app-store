@@ -2,146 +2,222 @@
 <!DOCTYPE html>
 <html lang="so">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ product.name }} - Somali App Store 🚀</title>
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
-<style>
-body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    margin: 0; padding: 0; background: #f9f9f9; color: #333;
-}
-a { text-decoration: none; color: inherit; }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ product.name }} - Somali App Store 🚀</title>
 
-/* Navbar */
-.navbar {
-    display: flex; justify-content: space-between; align-items: center;
-    padding: 15px 30px; background: linear-gradient(90deg, #4e54c8, #8f94fb);
-    color: #fff; position: sticky; top: 0; z-index: 100;
-}
-.navbar .logo { font-weight: bold; font-size: 1.5rem; }
-.nav-links { display: flex; gap: 15px; align-items: center; }
-.nav-links a { color: #fff; transition: 0.3s; }
-.nav-links a:hover { color: #ffe100; }
-.points-badge { background: #fff; color: #4e54c8; padding: 3px 8px; border-radius: 12px; font-size: 0.9rem; font-weight: bold; }
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 
-/* Detail Container */
-.detail-container {
-    max-width: 900px; margin: 40px auto;
-    background: #fff; border-radius: 15px;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-    overflow: hidden; padding: 20px;
-    display: flex; flex-wrap: wrap; gap: 20px;
-}
-.detail-image { flex: 1 1 300px; max-width: 400px; }
-.detail-image img {
-    width: 100%; border-radius: 15px; object-fit: cover;
-    opacity: 0; animation: fadeInUp 0.8s ease forwards;
-    transition: transform 0.4s ease, box-shadow 0.4s ease, opacity 0.6s ease;
-}
-.detail-image img:hover { transform: scale(1.03); box-shadow: 0 10px 30px rgba(0,0,0,0.4); }
+    <style>
+        /* ===== GENERAL ===== */
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            margin: 0;
+            background: #f9f9f9;
+            color: #333;
+            transition: 0.3s;
+        }
 
-.detail-info { flex: 1 1 300px; display: flex; flex-direction: column; gap: 15px; }
-.detail-info h1 { font-size: 2rem; color: #4e54c8; margin: 0; }
-.detail-info p.description { font-size: 1rem; line-height: 1.6; color: #555; }
-.detail-info p.price { font-weight: bold; font-size: 1.3rem; color: #ff6600; }
+        a { text-decoration: none; color: inherit; }
 
-.detail-buttons { display: flex; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
-.detail-buttons a, .download-btn {
-    padding: 10px 25px; border-radius: 25px; font-weight: bold;
-    transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
-}
-.detail-buttons a:hover, .download-btn:hover { transform: scale(1.05); box-shadow: 0 6px 15px rgba(0,0,0,0.2); }
+        /* ===== DARK MODE ===== */
+        body.dark-mode {
+            background: #0f172a;
+            color: #e2e8f0;
+        }
+        body.dark-mode .detail-container {
+            background: #1e293b;
+        }
 
-/* Locked / Unlocked Buttons */
-.btn-unlocked { background: #10b981; color: #fff; }
-.btn-unlocked:hover { background: #059669; }
-.btn-locked { background: #f59e0b; color: #0f172a; }
-.btn-locked:hover { background: #d97706; }
+        /* ===== NAVBAR ===== */
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 30px;
+            background: linear-gradient(90deg,#4e54c8,#8f94fb);
+            color: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
 
-/* Back button */
-.back-btn { display: block; margin-top: 20px; font-weight: bold; color: #4e54c8; }
-.back-btn:hover { color: #ff6600; }
+        .nav-links {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
 
-/* Fade-in Animation */
-@keyframes fadeInUp { 0% { opacity: 0; transform: translateY(20px); } 100% { opacity: 1; transform: translateY(0); } }
+        .nav-links a:hover { color: #ffe100; }
 
-/* Responsive */
-@media (max-width: 768px) {
-    .detail-container { flex-direction: column; align-items: center; }
-    .detail-image, .detail-info { flex: 1 1 100%; max-width: 100%; }
-}
-</style>
+        .points-badge {
+            background: #fff;
+            color: #4e54c8;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        /* ===== DETAIL ===== */
+        .detail-container {
+            max-width: 900px;
+            margin: 40px auto;
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            opacity: 0;
+        }
+
+        .detail-image {
+            flex: 1 1 300px;
+        }
+
+        .detail-image img {
+            width: 100%;
+            border-radius: 15px;
+            transition: 0.3s;
+        }
+
+        .detail-image img:hover {
+            transform: scale(1.03);
+        }
+
+        .detail-info {
+            flex: 1 1 300px;
+        }
+
+        .detail-info h1 {
+            color: #4e54c8;
+        }
+
+        .price {
+            font-size: 20px;
+            font-weight: bold;
+            color: #ff6600;
+        }
+
+        .description {
+            line-height: 1.6;
+            color: #555;
+        }
+
+        /* ===== BUTTONS ===== */
+        .buttons {
+            margin-top: 20px;
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+        }
+
+        .btn-green { background: #10b981; color: #fff; }
+        .btn-yellow { background: #f59e0b; color: #000; }
+        .btn-purple { background: #4e54c8; color: #fff; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 768px) {
+            .detail-container {
+                flex-direction: column;
+            }
+        }
+    </style>
 </head>
 <body>
 
-<!-- Navbar -->
+<!-- NAVBAR -->
 <nav class="navbar">
-    <a href="/" class="logo">Somali AppStore 🚀</a>
+    <a href="/">Somali AppStore 🚀</a>
+
     <div class="nav-links">
         <a href="/">Dukaanka</a>
+
         {% if user.is_authenticated %}
             <a href="{% url 'favorites' %}">❤️ Favorites</a>
-            <a href="/my-apps/">My Apps 📱</a>
+            <a href="/my-apps/">My Apps</a>
             <span class="points-badge">{{ user.username }}</span>
         {% else %}
             <a href="/login/">Login</a>
         {% endif %}
+
+        <button id="darkModeToggle">🌙</button>
     </div>
 </nav>
 
-<!-- Product Detail -->
+<!-- DETAIL -->
 <div class="detail-container">
+
     <div class="detail-image">
         {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+            <img src="{{ product.image.url }}" loading="lazy">
         {% elif product.image_url %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">
+            <img src="{{ product.image_url }}" loading="lazy">
         {% else %}
-            <img src="{% static 'images/logo.png' %}" alt="No Image" loading="lazy">
+            <img src="{% static 'images/logo.png' %}" loading="lazy">
         {% endif %}
     </div>
 
     <div class="detail-info">
         <h1>{{ product.name }}</h1>
-        <p class="description">{{ product.description }}</p>
+
         <p class="price">$ {{ product.price }}</p>
 
-       <div class="detail-buttons">
+        <p class="description">{{ product.description }}</p>
 
-    {% if user.is_authenticated %}
-        <a href="{% url 'toggle_favorite' product.id %}">❤️ Favorite</a>
-    {% endif %}
+        <div class="buttons">
 
-    {% if is_approved %}
-        <a href="{{ product.download_link }}" target="_blank" class="download-btn btn-unlocked">
-            🚀 Soo Degso Hadda
-        </a>
-    {% else %}
-        <a href="{% url 'request_download' product.id %}" class="download-btn btn-locked">
-            🔒 Bixi Lacagta si aad u Degsato
-        </a>
-    {% endif %}
+            {% if user.is_authenticated %}
+                <a href="{% url 'toggle_favorite' product.id %}" class="btn btn-purple">
+                    ❤️ Favorite
+                </a>
+            {% endif %}
 
-</div>
+            {% if is_approved %}
+                <a href="{{ product.download_link }}" target="_blank" class="btn btn-green">
+                    🚀 Soo Degso
+                </a>
+            {% else %}
+                <a href="{% url 'request_download' product.id %}" class="btn btn-yellow">
+                    🔒 Bixi Lacagta
+                </a>
+            {% endif %}
 
-        <a href="/" class="back-btn">← Ku laabo Bogga Hore</a>
+        </div>
+
+        <br>
+        <a href="/">← Back</a>
+
     </div>
 </div>
 
-<!-- ScrollReveal -->
+<!-- SCRIPTS -->
 <script src="https://unpkg.com/scrollreveal"></script>
+
 <script>
-    ScrollReveal().reveal('.detail-container', {
-        distance: '50px',
-        duration: 800,
-        easing: 'ease-in-out',
-        origin: 'bottom',
-        interval: 100,
-        reset: false
-    });
+ScrollReveal().reveal('.detail-container', {
+    distance: '40px',
+    duration: 800,
+    origin: 'bottom'
+});
+
+// DARK MODE
+document.getElementById('darkModeToggle').onclick = () => {
+    document.body.classList.toggle('dark-mode');
+};
 </script>
 
-<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
