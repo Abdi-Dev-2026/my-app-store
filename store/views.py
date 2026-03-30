@@ -4,13 +4,16 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Sum
 from django.contrib.auth.models import User
 
+# Home Page - Show all products with search & category filter
 def home(request):
     products = Product.objects.all()
 
+    # Search functionality
     query = request.GET.get('q')
     if query:
         products = products.filter(name__icontains=query)
 
+    # Category filter
     category = request.GET.get('category')
     if category:
         products = products.filter(category=category)
@@ -21,6 +24,7 @@ def home(request):
         'selected_category': category
     })
 
+# Product detail view
 def product_detail(request, id):
     product = get_object_or_404(Product, id=id)
     is_approved = False
@@ -37,6 +41,7 @@ def product_detail(request, id):
         'is_approved': is_approved
     })
 
+# Request download (Payment or Points)
 @login_required
 def request_download(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -52,6 +57,7 @@ def request_download(request, product_id):
 
     return render(request, 'payment.html', {'product': product})
 
+# User's purchased apps
 @login_required
 def my_apps(request):
     approved_requests = DownloadRequest.objects.filter(
@@ -70,6 +76,7 @@ def my_apps(request):
         'balance': balance
     })
 
+# Buy product with points
 @login_required
 def buy_with_points(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -91,6 +98,7 @@ def buy_with_points(request, product_id):
     else:
         return redirect('product_detail', id=product.id)
 
+# Toggle Favorite
 @login_required
 def toggle_favorite(request, product_id):
     product = get_object_or_404(Product, id=product_id)
@@ -99,11 +107,13 @@ def toggle_favorite(request, product_id):
         fav.delete()
     return redirect(request.META.get('HTTP_REFERER', 'home'))
 
+# View user's favorites
 @login_required
 def my_favorites(request):
     favorites = Favorite.objects.filter(user=request.user).select_related('product')
     return render(request, 'favorites.html', {'favorites': favorites})
 
+# Admin Dashboard
 @login_required
 def admin_dashboard(request):
     if not request.user.is_superuser:
