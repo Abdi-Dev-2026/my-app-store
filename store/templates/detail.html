@@ -3,60 +3,72 @@
 <html lang="so">
 <head>
     <meta charset="UTF-8">
-    <title>{{ product.name }} - Details</title>
-    <style>
-        body { font-family: 'Segoe UI', sans-serif; background: #0f172a; color: white; padding: 20px; }
-        .detail-container { max-width: 800px; margin: auto; background: #1e293b; padding: 30px; border-radius: 20px; text-align: center; border: 1px solid #334155; }
-        .detail-container img { width: 100%; max-width: 350px; height: 350px; border-radius: 20px; object-fit: cover; border: 3px solid #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        h1 { font-size: 36px; margin-top: 20px; }
-        .price { font-size: 28px; color: #38bdf8; font-weight: bold; margin: 15px 0; }
-        .desc { line-height: 1.8; color: #94a3b8; margin: 20px 0; font-size: 18px; text-align: justify; padding: 0 20px; }
-
-        .download-btn { padding: 18px 45px; text-decoration: none; border-radius: 50px; font-weight: bold; font-size: 20px; display: inline-block; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-
-        .btn-unlocked { background: #10b981; color: white; }
-        .btn-unlocked:hover { transform: scale(1.05); background: #059669; }
-
-        .btn-locked { background: #f59e0b; color: #0f172a; }
-        .btn-locked:hover { transform: scale(1.05); background: #d97706; }
-
-        .back-btn { display: block; margin-top: 30px; color: #94a3b8; text-decoration: none; font-weight: bold; }
-        .back-btn:hover { color: #38bdf8; }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Soomaali App Store 🚀</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
-
 <body>
 
-<div class="detail-container">
-
-    {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}">
-    {% elif product.image_url %}
-        <img src="{{ product.image_url }}" alt="{{ product.name }}">
-    {% else %}
-        <img src="{% static 'images/logo.png' %}" alt="No Image">
-    {% endif %}
-
-    <h1>{{ product.name }}</h1>
-    <p class="price">Qiimaha: ${{ product.price }}</p>
-
-    <div class="desc">
-        {{ product.description }}
+<nav class="navbar">
+    <a href="/" class="logo">Somali AppStore 🚀</a>
+    <div class="nav-links">
+        <a href="/">Dukaanka</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'favorites' %}">❤️ Favorites</a>
+            <a href="/my-apps/">My Apps 📱</a>
+            <span class="points-badge">{{ user.username }}</span>
+        {% else %}
+            <a href="/login/">Login</a>
+        {% endif %}
     </div>
+</nav>
 
-    {% if is_approved %}
-        <a href="{{ product.download_link }}" target="_blank" class="download-btn btn-unlocked">
-            🚀 Soo Degso Hadda (Unlocked)
-        </a>
-    {% else %}
-        <a href="{% url 'request_download' product.id %}" class="download-btn btn-locked">
-            🔒 Bixi Lacagta si aad u Degsato
-        </a>
-    {% endif %}
-
-    <a href="/" class="back-btn">← Ku laabo Bogga Hore</a>
-
+<div class="search-section">
+    <h1>Raadi Apps iyo Games</h1>
+    <form method="GET" action="/">
+        <input type="text" name="q" placeholder="Ku qor magaca App-ka aad rabto..." value="{{ query|default:'' }}">
+        <button type="submit" class="search-btn">Raadi 🔍</button>
+    </form>
 </div>
 
+<div class="categories">
+    <a href="/" class="cat-btn">All</a>
+    <a href="?category=games" class="cat-btn">Games 🎮</a>
+    <a href="?category=apps" class="cat-btn">Apps 📱</a>
+    <a href="?category=tools" class="cat-btn">Tools 🛠️</a>
+</div>
+
+<div class="container">
+    {% for product in products %}
+    <div class="card">
+        <a href="{% url 'toggle_favorite' product.id %}" class="fav-btn">❤️</a>
+        
+        {% if product.image %}
+            <img src="{{ product.image.url }}" alt="{{ product.name }}">
+        {% elif product.image_url %}
+            <img src="{{ product.image_url }}" alt="{{ product.name }}">
+        {% else %}
+            <img src="{% static 'images/logo.png' %}" alt="No Image">
+        {% endif %}
+
+        {% if product.video_url %}
+            <video controls width="100%">
+                <source src="{{ product.video_url }}" type="video/mp4">
+            </video>
+        {% endif %}
+        
+        <div class="card-body">
+            <h3>{{ product.name }}</h3>
+            <p class="description">{{ product.description|truncatewords:8 }}</p>
+            <p class="price">$ {{ product.price }}</p>
+            <a href="{% url 'product_detail' product.id %}" class="btn-view">View Details</a>
+        </div>
+    </div>
+    {% empty %}
+        <p class="no-results">Naga raali noqo, wax App ah laguma helin 😢</p>
+    {% endfor %}
+</div>
+
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
