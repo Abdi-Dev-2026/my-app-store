@@ -8,46 +8,52 @@
 <style>
 body {
     font-family: 'Segoe UI';
-    background:#0f172a;
-    color:white;
-    transition:0.3s;
+    background: #0f172a;
+    color: white;
 }
 
+/* Dark mode support */
 body.dark-mode {
-    background:#111827;
+    background: #111827;
 }
 
 .detail-container {
-    max-width:800px;
-    margin:auto;
-    padding:30px;
-    background:#1e293b;
-    border-radius:20px;
-    text-align:center;
+    max-width: 800px;
+    margin: auto;
+    background: #1e293b;
+    padding: 30px;
+    border-radius: 20px;
+    text-align: center;
 }
 
+/* IMAGE (MUHIIM) */
 .detail-container img {
-    width:100%;
-    max-width:350px;
-    height:350px;
-    object-fit:cover;
-    border-radius:20px;
-    transition:0.3s;
+    width: 100%;
+    max-width: 350px;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 20px;
+    transition: 0.3s;
 }
 
 .detail-container img:hover {
-    transform:scale(1.03);
+    transform: scale(1.05);
 }
 
 .download-btn {
-    padding:15px 40px;
-    border-radius:40px;
-    font-weight:bold;
-    display:inline-block;
+    padding: 15px 40px;
+    border-radius: 40px;
+    display: inline-block;
 }
 
-.btn-unlocked { background:#10b981; }
-.btn-locked { background:#f59e0b; }
+/* Payment logic intact */
+.btn-unlocked {
+    background: green;
+}
+
+.btn-locked {
+    background: orange;
+}
 
 </style>
 </head>
@@ -56,13 +62,13 @@ body.dark-mode {
 
 <div class="detail-container">
 
-    <!-- IMAGE LOGIC (LA KU DARAY LINK SUPPORT) -->
+    <!-- IMAGE (LABADA SYSTEM intact) -->
     {% if product.image %}
-        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
+        <img src="{{ product.image.url }}" loading="lazy">
     {% elif product.image_url %}
-        <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">
+        <img src="{{ product.image_url }}" loading="lazy">
     {% else %}
-        <img src="{% static 'images/logo.png' %}" alt="No Image" loading="lazy">
+        <img src="{% static 'images/logo.png' %}" loading="lazy">
     {% endif %}
 
     <h1>{{ product.name }}</h1>
@@ -70,6 +76,7 @@ body.dark-mode {
 
     <p>{{ product.description }}</p>
 
+    <!-- PAYMENT SYSTEM intact -->
     {% if is_approved %}
         <a href="{{ product.download_link }}" class="download-btn btn-unlocked">
             🚀 Download
@@ -80,16 +87,9 @@ body.dark-mode {
         </a>
     {% endif %}
 
-    <br><br>
-    <a href="/">← Back</a>
+    <a href="/">Back</a>
 
 </div>
-
-<script>
-document.body.onclick = () => {
-    document.body.classList.toggle('dark-mode');
-}
-</script>
 
 </body>
 </html>
