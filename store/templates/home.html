@@ -13,156 +13,145 @@
             margin: 0;
             background: #f9f9f9;
             color: #333;
+            transition: 0.3s;
         }
 
-        /* Dark Mode */
         body.dark-mode {
-            background: #0f172a;
-            color: #fff;
+            background: #1e1e2f;
+            color: #eee;
         }
 
-        /* Navbar */
         .navbar {
             display: flex;
             justify-content: space-between;
             padding: 15px 30px;
-            background: linear-gradient(90deg, #4e54c8, #8f94fb);
+            background: linear-gradient(90deg,#4e54c8,#8f94fb);
             color: white;
         }
 
-        .nav-links {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
+        .nav-links { display:flex; gap:15px; align-items:center; }
 
         .points-badge {
-            background: white;
-            color: #4e54c8;
-            padding: 3px 8px;
-            border-radius: 10px;
+            background:white;
+            color:#4e54c8;
+            padding:4px 10px;
+            border-radius:20px;
         }
 
-        /* Animation points */
-        .points-badge.animate {
-            animation: pop 0.6s ease;
+        .search-section {
+            text-align:center;
+            padding:30px;
+            background:linear-gradient(to right,#667eea,#764ba2);
+            color:white;
         }
 
-        @keyframes pop {
-            0% { transform: scale(1); }
-            50% { transform: scale(1.4); }
-            100% { transform: scale(1); }
-        }
-
-        /* Cards */
         .container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 20px;
-            padding: 20px;
+            display:flex;
+            flex-wrap:wrap;
+            gap:20px;
+            justify-content:center;
+            padding:20px;
         }
 
         .card {
-            width: 250px;
-            background: white;
-            border-radius: 15px;
-            overflow: hidden;
-            transition: 0.3s;
+            width:250px;
+            background:white;
+            border-radius:15px;
+            overflow:hidden;
+            box-shadow:0 5px 15px rgba(0,0,0,0.1);
+            transition:0.3s;
         }
 
         .card:hover {
-            transform: translateY(-5px);
+            transform:translateY(-5px);
         }
 
         .card img {
-            width: 100%;
-            height: 180px;
-            object-fit: cover;
-            transition: 0.3s;
+            width:100%;
+            height:180px;
+            object-fit:cover;
+            transition:0.3s;
         }
 
         .card img:hover {
-            transform: scale(1.05);
+            transform:scale(1.05);
         }
 
+        .card-body { padding:15px; }
+
         .btn-view {
-            display: inline-block;
-            padding: 8px 15px;
-            background: #4e54c8;
-            color: white;
-            border-radius: 20px;
+            display:inline-block;
+            padding:8px 15px;
+            background:#4e54c8;
+            color:white;
+            border-radius:20px;
+        }
+
+        body.dark-mode .card {
+            background:#2c2c3a;
         }
     </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar">
-    <a href="/" class="logo">Somali AppStore 🚀</a>
+    <a href="/">Somali AppStore 🚀</a>
 
     <div class="nav-links">
         <a href="/">Dukaanka</a>
 
         {% if user.is_authenticated %}
             <a href="{% url 'favorites' %}">❤️ Favorites</a>
-            <a href="/my-apps/">My Apps 📱</a>
+            <a href="/my-apps/">My Apps</a>
             <span class="points-badge">{{ user.username }}</span>
         {% else %}
             <a href="/login/">Login</a>
         {% endif %}
 
-        <!-- DARK MODE -->
         <button id="darkModeToggle">🌙</button>
     </div>
 </nav>
 
-<!-- Search -->
 <div class="search-section">
+    <h1>Raadi Apps</h1>
     <form method="GET">
-        <input type="text" name="q" value="{{ query|default:'' }}">
+        <input type="text" name="q" value="{{ query }}">
         <button>Search</button>
     </form>
 </div>
 
-<!-- Products -->
 <div class="container">
 {% for product in products %}
 <div class="card">
 
-    <a href="{% url 'toggle_favorite' product.id %}">❤️</a>
-
-    <!-- IMAGE (MUHIIM – waxba lagama tegin) -->
+    <!-- IMAGE LOGIC (LA SAXAY OO LA XAQIIJIYAY) -->
     {% if product.image %}
-        <img src="{{ product.image.url }}" loading="lazy">
+        <img src="{{ product.image.url }}" alt="{{ product.name }}" loading="lazy">
     {% elif product.image_url %}
-        <img src="{{ product.image_url }}" loading="lazy">
+        <img src="{{ product.image_url }}" alt="{{ product.name }}" loading="lazy">
     {% else %}
-        <img src="{% static 'images/logo.png' %}" loading="lazy">
+        <img src="{% static 'images/logo.png' %}" alt="No Image" loading="lazy">
     {% endif %}
 
-    <h3>{{ product.name }}</h3>
-    <p>{{ product.description|truncatewords:8 }}</p>
-    <p>$ {{ product.price }}</p>
+    <div class="card-body">
+        <h3>{{ product.name }}</h3>
+        <p>{{ product.description|truncatewords:8 }}</p>
+        <p>${{ product.price }}</p>
 
-    <a href="{% url 'product_detail' product.id %}" class="btn-view">View</a>
-
+        <a href="{% url 'product_detail' product.id %}" class="btn-view">
+            View
+        </a>
+    </div>
 </div>
 {% endfor %}
 </div>
 
+<script src="https://unpkg.com/scrollreveal"></script>
 <script>
-/* Dark mode */
-const btn = document.getElementById('darkModeToggle');
-btn.onclick = () => {
-    document.body.classList.toggle('dark-mode');
-};
+ScrollReveal().reveal('.card',{interval:100});
 
-/* Points animation */
-const badge = document.querySelector('.points-badge');
-if(badge){
-    badge.classList.add('animate');
-}
+const btn = document.getElementById('darkModeToggle');
+btn.onclick = () => document.body.classList.toggle('dark-mode');
 </script>
 
 </body>
