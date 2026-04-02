@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ product.name }} - Faahfaahinta</title>
+    <title>{{ product.name }} - Somali AppStore 🚀</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
@@ -13,42 +13,63 @@
     <a href="/" class="logo">Somali AppStore 🚀</a>
     <div class="nav-links">
         <a href="/">Dukaanka</a>
-        <a href="/my-apps/">My Apps 📱</a>
+        {% if user.is_authenticated %}
+            <a href="{% url 'favorites' %}">❤️ Favorites</a>
+            <a href="/my-apps/">My Apps 📱</a>
+            <span class="points-badge">{{ user.username }}</span>
+        {% else %}
+            <a href="/login/">Login</a>
+        {% endif %}
     </div>
 </nav>
 
 <div class="container">
-    <div class="product-detail-card">
-        {% if product.image %}
-            <img src="{{ product.image.url }}" alt="{{ product.name }}" style="max-width: 300px;">
-        {% elif product.image_url %}
-            <img src="{{ product.image_url }}" alt="{{ product.name }}" style="max-width: 300px;">
-        {% else %}
-            <img src="{% static 'images/logo.png' %}" alt="No Image">
-        {% endif %}
+    <div class="product-detail-layout">
+        
+        <div class="detail-image">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}">
+            {% elif product.image_url %}
+                <img src="{{ product.image_url }}" alt="{{ product.name }}">
+            {% else %}
+                <img src="{% static 'images/logo.png' %}" alt="No Image">
+            {% endif %}
+        </div>
+
+        <div class="detail-info">
+            <h1>{{ product.name }}</h1>
+            <p class="category-tag">{{ product.category|title }}</p>
+            <hr>
+            <h3>Faahfaahinta:</h3>
+            <p class="description">{{ product.description }}</p>
+            
+            <div class="price-section">
+                <p class="price">Qiimaha: <span>$ {{ product.price }}</span></p>
+            </div>
+
+            <div class="action-buttons">
+                {% if product.file %}
+                    <a href="{{ product.file.url }}" class="btn-download" download>Soo Degso (Download) 📥</a>
+                {% else %}
+                    <p class="no-file-msg">App-kan weli looma soo rarin faylka (APK/EXE).</p>
+                {% endif %}
+                
+                <a href="/" class="btn-back">← Dib ugu laabo Dukaanka</a>
+            </div>
+        </div>
 
         {% if product.video_url %}
-            <video controls width="100%" style="margin-top: 20px;">
+        <div class="video-preview">
+            <h3>Horudhaca App-ka (Video):</h3>
+            <video controls width="100%">
                 <source src="{{ product.video_url }}" type="video/mp4">
+                Browser-kaagu ma taageerayo Video-ga.
             </video>
-        {% endif %}
-
-        <div class="detail-body">
-            <h1>{{ product.name }}</h1>
-            <p class="full-description">{{ product.description }}</p>
-            <p class="price">Qiimaha: $ {{ product.price }}</p>
-            
-            {% if product.file %}
-                <a href="{{ product.file.url }}" class="btn-view" download>Download App 📥</a>
-            {% else %}
-                <p style="color: red;">App-kan laguma soo rarin faylka lagu dejisto.</p>
-            {% endif %}
-            
-            <br><br>
-            <a href="/" class="btn-back">← Ku noqo Dukaanka</a>
         </div>
+        {% endif %}
     </div>
 </div>
 
+<script src="{% static 'js/main.js' %}"></script>
 </body>
 </html>
