@@ -31,13 +31,6 @@
     </form>
 </div>
 
-<div class="categories">
-    <a href="/" class="cat-btn">All</a>
-    <a href="?category=games" class="cat-btn">Games 🎮</a>
-    <a href="?category=apps" class="cat-btn">Apps 📱</a>
-    <a href="?category=tools" class="cat-btn">Tools 🛠️</a>
-</div>
-
 <div class="container">
     {% for product in products %}
     <div class="card">
@@ -49,12 +42,6 @@
             <img src="{{ product.image_url }}" alt="{{ product.name }}">
         {% else %}
             <img src="{% static 'images/logo.png' %}" alt="No Image">
-        {% endif %}
-
-        {% if product.video_url %}
-            <video controls width="100%">
-                <source src="{{ product.video_url }}" type="video/mp4">
-            </video>
         {% endif %}
         
         <div class="card-body">
